@@ -3,6 +3,7 @@
 #include <string>
 #include <thread>
 #include <vector>
+#include <iostream>
 
 #include "format.h"
 #include "ncurses_display.h"
@@ -10,6 +11,7 @@
 
 using std::string;
 using std::to_string;
+using std::cout;
 
 // 50 bars uniformly displayed from 0 - 100 %
 // 2% is one bar(|)
@@ -72,8 +74,8 @@ void NCursesDisplay::DisplayProcesses(std::vector<Process>& processes,
   for (int i = 0; i < n; ++i) {
     mvwprintw(window, ++row, pid_column, to_string(processes[i].Pid()).c_str());
     mvwprintw(window, row, user_column, processes[i].User().c_str());
-    float cpu = processes[i].CpuUtilization() * 100;
-    mvwprintw(window, row, cpu_column, to_string(cpu).substr(0, 4).c_str());
+    float cpu = processes[i].CpuUtilization(); //* 100;
+    mvwprintw(window, row, cpu_column, to_string(cpu).substr(0, 7).c_str());
     mvwprintw(window, row, ram_column, processes[i].Ram().c_str());
     mvwprintw(window, row, time_column,
               Format::ElapsedTime(processes[i].UpTime()).c_str());
